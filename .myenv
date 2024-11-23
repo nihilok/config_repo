@@ -1,0 +1,36 @@
+#!/usr/bin/env zsh
+
+export EDITOR=vim
+export MAILSERVER=x.x.x.x
+export WEBSERVER=x.x.x.x
+
+function zshconfig() {
+  initial_mtime=$(stat -c %Y ~/.zshrc)
+  vim ~/.zshrc &&
+  final_mtime=$(stat -c %Y ~/.zshrc)
+  # Compare the modification times
+  if [[ "$initial_mtime" != "$final_mtime" ]]; then
+    echo "Reloading ~/.zshrc"
+    source ~/.zshrc || echo "Error reloading ~/.zshrc"
+  fi
+}
+
+alias ssh="kitten ssh"
+alias mailserver="ssh ubuntu@$MAILSERVER"
+alias webserver="ssh ubuntu@$WEBSERVER"
+alias ohmyzsh="vim ~/.oh-my-zsh"
+alias zshreload="source ~/.zshrc"
+alias activate="pyenv activate"
+alias restart="sudo systemctl restart"
+alias start="sudo systemctl start"
+alias stop="sudo systemctl stop"
+alias status="sudo systemctl status"
+alias enable="sudo systemctl enable"
+alias disable="sudo systemctl disable"
+alias reload="sudo systemctl reload"
+alias daemon-reload="sudo systemctl daemon-reload"
+alias journal="sudo journalctl -xe"
+alias update="sudo apt update"
+alias upgrade="sudo apt upgrade"
+alias install="sudo apt install"
+alias remove="sudo apt remove"
