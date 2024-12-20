@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+if [[ $AUTO_TMUX -eq 1 ]]; then
+        if [[ -n $SSH_CONNECTION ]]; then
+                if [[ -z $TMUX ]]; then
+                        TMUX_SESSION_NAME="tmux_$(echo $SSH_CONNECTION | md5sum | cut -d ' ' -f 1 | cut -c 1-6)"
+                        tmux attach -t $TMUX_SESSION_NAME || tmux new-session -s $TMUX_SESSION_NAME
+                fi
+        else
+                if [[ -z $TMUX ]]; then
+                        TMUX_SESSION_NAME="tmux"
+                        tmux attach -t $TMUX_SESSION_NAME || tmux new-session -s $TMUX_SESSION_NAME
+                fi
+        fi
+fi

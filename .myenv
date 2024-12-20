@@ -1,8 +1,20 @@
 #!/usr/bin/env zsh
 
 export EDITOR=vim
-export MAILSERVER=x.x.x.x
-export WEBSERVER=x.x.x.x
+export MAILSERVER=51.195.200.2
+export MAILSERVER2025=51.89.164.131
+export WEBSERVER=18.130.232.216
+export LINODE=139.162.247.33
+export PIXEL_HOTSPOT=192.168.114.220
+export PIXEL_LOCAL_APPARTMENT=192.168.1.9
+export PIXEL_USERNAME=u0_a292
+export PI5_31=192.168.1.10
+export BLOG_DIR=~/Code/blog
+
+change_dir() {
+  local DIRNAME="$1"
+  cd "$DIRNAME" || echo "Failed to change directory to $DIRNAME"
+}
 
 function zshconfig() {
   initial_mtime=$(stat -c %Y ~/.zshrc)
@@ -15,9 +27,31 @@ function zshconfig() {
   fi
 }
 
-alias ssh="kitten ssh"
+function send_to_phone() {
+  local FILENAME="$1"
+  scp -P 8022 "$FILENAME" "${PIXEL_USERNAME}@${PIXEL_LOCAL_APPARTMENT}:~/storage/downloads"
+}
+
+function get_from_phone() {
+  local FILEPATH="$1"
+  scp -P 8022 -r "${PIXEL_USERNAME}@${PIXEL_LOCAL_APPARTMENT}:$FILEPATH" .
+}
+
+function mkcd() {
+  mkdir -p "$1" && cd "$1"
+}
+
+if [[ -z $TMUX ]]; then
+  alias ssh="kitten ssh"
+fi
+
 alias mailserver="ssh ubuntu@$MAILSERVER"
-alias webserver="ssh ubuntu@$WEBSERVER"
+alias mailserver2025="ssh ubuntu@$MAILSERVER2025"
+alias webserver="ssh -i ~/.ssh/AWSWebServerKeyPair.pem admin@$WEBSERVER"
+alias pixelhs="ssh -p 8022 ${PIXEL_USERNAME}@$PIXEL_HOTSPOT"
+alias pixel31="ssh -p 8022 ${PIXEL_USERNAME}@$PIXEL_LOCAL_APPARTMENT"
+alias linode="ssh -i ~/.ssh/shpadoinkle-1 mj@$LINODE"
+alias pi5_31="ssh mj@$PI5_31"
 alias ohmyzsh="vim ~/.oh-my-zsh"
 alias zshreload="source ~/.zshrc"
 alias activate="pyenv activate"
@@ -34,3 +68,12 @@ alias update="sudo apt update"
 alias upgrade="sudo apt upgrade"
 alias install="sudo apt install"
 alias remove="sudo apt remove"
+alias push="git push"
+alias pull="git pull"
+alias copilot="gh copilot"
+alias v="vim ."
+alias copyf="xsel --clipboard <"
+alias pastef="xsel --clipboard >"
+alias copy="xsel --clipboard -i"
+alias paste="xsel --clipboard -o"
+alias joplind="joplin --profile ~/.config/joplin-desktop"
