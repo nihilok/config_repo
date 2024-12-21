@@ -41,10 +41,46 @@ function mkcd() {
   mkdir -p "$1" && cd "$1"
 }
 
-if [[ -z $TMUX ]]; then
+if [[ -z $TMUX ]] && [[ -n $KITTY_WINDOW_ID ]]; then
   alias ssh="kitten ssh"
 fi
 
+if [ -x "$(command -v systemctl)" ]; then
+	function start {
+		sudo systemctl start $1
+	}
+	function restart {
+		sudo systemctl restart $1
+	}
+	function stop {
+		sudo systemctl stop $1
+	}
+	function enable {
+		sudo systemctl enable
+	}
+	function reload {
+		sudo systemctl daemon-reload
+	}
+
+elif [ -x "$(command -v service)" ]; then
+	function start {
+		sudo service $1 start
+	}
+	function restart {
+		sudo service $1 restart
+	}
+	function stop {
+		sudo service $1 stop
+	}
+	function enable {
+		sudo update-rc.d $1 enable
+	}
+	function reload {
+		sudo service $1 reload
+	}
+fi
+
+alias vim=nvim
 alias mailserver="ssh ubuntu@$MAILSERVER"
 alias mailserver2025="ssh ubuntu@$MAILSERVER2025"
 alias webserver="ssh -i ~/.ssh/AWSWebServerKeyPair.pem admin@$WEBSERVER"
@@ -55,12 +91,6 @@ alias pi5_31="ssh mj@$PI5_31"
 alias ohmyzsh="vim ~/.oh-my-zsh"
 alias zshreload="source ~/.zshrc"
 alias activate="pyenv activate"
-alias restart="sudo systemctl restart"
-alias start="sudo systemctl start"
-alias stop="sudo systemctl stop"
-alias status="sudo systemctl status"
-alias enable="sudo systemctl enable"
-alias disable="sudo systemctl disable"
 alias reload="sudo systemctl reload"
 alias daemon-reload="sudo systemctl daemon-reload"
 alias journal="sudo journalctl -xe"
