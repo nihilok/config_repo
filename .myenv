@@ -45,6 +45,10 @@ if [[ -z $TMUX ]] && [[ -n $KITTY_WINDOW_ID ]]; then
   alias ssh="kitten ssh"
 fi
 
+function copy {
+  echo -n "$1" | xsel --clipboard -i
+}
+
 if [ -x "$(command -v systemctl)" ]; then
 	function start {
 		sudo systemctl start $1
@@ -104,6 +108,6 @@ alias copilot="gh copilot"
 alias v="vim ."
 alias copyf="xsel --clipboard <"
 alias pastef="xsel --clipboard >"
-alias copy="xsel --clipboard -i"
 alias paste="xsel --clipboard -o"
 alias joplind="joplin --profile ~/.config/joplin-desktop"
+alias nm="nmap -sV -sC -p-"
