@@ -1,5 +1,5 @@
 " Python 3 host provider
-let g:python3_host_prog = '/home/mj/.pyenv/versions/nvim/bin/python3'
+let g:python3_host_prog = "$HOME/.pyenv/versions/nvim/bin/python3"
 
 " Config Section
 if (has("termguicolors"))
